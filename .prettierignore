@@ -1,0 +1,5 @@
+.env
+migrations
+node_modules
+dist
+.vscode
