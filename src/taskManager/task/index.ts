@@ -32,7 +32,7 @@ export default class Task {
     }
 
     private initWorker(): void {
-        const worker = new Worker(this._taskFilePath);
+        const worker = new Worker(this._taskFilePath, {stderr: true});
         worker.on('online', () => {
             this._status = 'RUNNING';
             console.log('ONLINE')
@@ -43,9 +43,11 @@ export default class Task {
         worker.on('exit', (code) => {
             console.log('CODE: ' + code);
             if(code == 0) this._status = 'DONE';
+            if(code == 1) this._status = 'ERROR';
         })
         worker.on('error', (err) => {
-            console.log('ERROR')
+            console.log('ON ERROR')
+            console.log(err)
             this._status = 'ERROR';
         });
        

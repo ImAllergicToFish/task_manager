@@ -12,7 +12,8 @@ stream may be blocked.
 
 async function main(): Promise<void> {
     console.log('Hello from worker!');
-    throw new Error('TEST ERROR')
+    throw new Error('TEST ERROR');
+    //while(true){};
 }
 
 
@@ -20,22 +21,35 @@ async function main(): Promise<void> {
 _______________TECHNICAL CODE FOR THE TASK MANAGER_________________
 
            !!!WARNING: DO NOT CHANGE THE CODE BELOW!!!
-           
+
 *******************************************************************/        
 
-if(!parentPort) throw new Error('Parent thread is not defined');
-parentPort.on('message', (msg: string) => {
-    console.log('Hello ' + msg);
-})
 
-self.addEventListener('unhandledrejection', function (event) {
-    // the event object has two special properties:
-    // event.promise - the promise that generated the error
-    // event.reason  - the unhandled error object
-    throw event.reason;
-});
+try {
+    // Cant run file as main thread
+    if(!parentPort) throw new Error('Parent thread is not defined');
 
-main();
+    // Receive message from main thread
+    parentPort.on('message', (msg: string) => {
+        console.log('Hello ' + msg);
+    })
+
+    main()
+        // .catch((err) => {
+        //     console.log('WORKER ERROR \n' + err);
+        //     process.exit(1);
+        // })
+        .then(() => {
+            process.exit(0)
+        })
+
+} catch(err) {
+    console.log('WORKER ERROR \n' + err);
+    process.exit(1);
+}
+
+
+
 
 
 
