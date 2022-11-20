@@ -1,8 +1,7 @@
 import { MainThreadMessageType } from "../../../ts/types";
 
 type MainThreadMesaageData<T extends MainThreadMessageType> = 
-    T extends 'pause' ? never :
-    T extends 'unpause' ? never :
+    T extends 'stop' ? never :
     never;
 
 export default class MainThreadMessageInstance<T extends MainThreadMessageType> {

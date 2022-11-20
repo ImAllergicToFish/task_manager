@@ -1,8 +1,9 @@
 import { Worker } from "worker_threads";
-import { TaskStatus, WorkerMessage } from "../../ts/types";
+import { TaskInfo, TaskStatus, WorkerMessage } from "../../ts/types";
 import MainThreadMessageInstance from "./messages/mainThreadMessage";
 
 export default class Task {
+
     private readonly _taskFilePath: string;
     private _worker: Worker | undefined;
 
@@ -19,8 +20,16 @@ export default class Task {
         return this._name;
     }
 
-    get status(): string {
+    get status(): TaskStatus {
         return this._status;
+    }
+
+    get info(): TaskInfo {
+        return {
+            name: this.name,
+            status: this.status,
+            internalInfo: this._internalInfo
+        }
     }
 
     constructor(taskFileName: string, taskName?: string) {
@@ -40,21 +49,10 @@ export default class Task {
         this.initWorker();
     }
 
-    pause(): void {
-        if(!this._worker) {
-            console.log('UNDEFINED')
-            return;
-        }
-        const msg = new MainThreadMessageInstance('pause');
-        this._worker.postMessage(msg);
-        this._status = 'PAUSED';
-    }
-
-    unPause(): void {
+    async stop(): Promise<void> {
         if(!this._worker) return;
-        const msg = new MainThreadMessageInstance('unpause');
-        this._worker.postMessage(msg);
-        this._status = 'RUNNING';
+        await this._worker.terminate();
+        this._status = 'PENDING';
     }
 
     private initWorker(): void {
@@ -65,7 +63,6 @@ export default class Task {
         })
 
         worker.on('message', (msg: WorkerMessage) => {
-            console.log('MT msg:', msg);
             if(msg.type == "log") {
                 console.log(msg.data);
             }
@@ -87,6 +84,5 @@ export default class Task {
        
         this._worker = worker;
     }
-
-
+    
 }

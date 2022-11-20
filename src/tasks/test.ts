@@ -27,9 +27,14 @@ async function main(): Promise<void> {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     let counter = 0;
     while(true) {
-        log('Hello world ' + counter);
-        counter += 1;
-        await sleep(1000);
+        // log('Hello world ' + counter);
+        // updateTaskInfo({counter});
+        // counter += 1;
+        // await sleep(1000);
+        for(let i =0; i < 1000000000; i++) {
+            
+        }
+        log('aboba')
     }
 }
 
@@ -47,35 +52,9 @@ try {
     // Cant run file as main thread
     if(!parentPort) throw new Error('Parent thread is not defined');
 
-    let isPaused = false;
-    let isUnpauseListenerOn = false;
-    parentPort.setMaxListeners(2);
-
     // Receive message from main thread
     parentPort.on('message', (msg: MainThreadMessage) => {
-        log(msg)
-        if(msg.type == 'pause') {
-            log('PAUSE MSG RECEIVED')
-            isPaused = true;
-            while(isPaused) {
-                if(!parentPort) throw new Error('Parent thread is not defined');
-                if(!isUnpauseListenerOn) {
-                    isUnpauseListenerOn = true;
-                    parentPort.on('message', (msg: MainThreadMessage) => {
-                        if(msg.type == 'unpause') {
-                            log('UNPAUSE REQ')
-                            isPaused = false;
-                        }
-                    })
-                }
-                // parentPort.on('message', (msg: MainThreadMessage) => {
-                //     if(msg.type == 'unpause') {
-                //         log('UNPAUSE REQ')
-                //         isPaused = false;
-                //     }
-                // })
-            }
-        }
+        
     })
 
     main()

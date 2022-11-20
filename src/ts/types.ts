@@ -1,4 +1,10 @@
-export type TaskStatus = 'PENDING' | 'RUNNING' | 'PAUSED' | 'ERROR' | 'DONE';
+export type TaskStatus = 'PENDING' | 'RUNNING' | 'ERROR' | 'DONE';
+
+export type TaskInfo = {
+    name: string,
+    status: TaskStatus,
+    internalInfo: unknown
+}
 
 //------------------------------------------------------------|
 //                 Worker Message Types                       |
@@ -17,7 +23,7 @@ export type WorkerMessage = {
 //              Main Thread Message Types                     |
 //------------------------------------------------------------/
 
-export type MainThreadMessageType = 'pause' | 'unpause';
+export type MainThreadMessageType = 'stop';
 
 export type MainThreadMessage = {
     type: MainThreadMessageType,
