@@ -1,10 +1,18 @@
-export type TaskStatus = 'PENDING' | 'RUNNING' | 'ERROR' | 'DONE';
+export type TaskStatus = 'PENDING' | 'RUNNING' | 'ERROR' | 'DONE' | 'STOPING';
+
+export type TaskTime = {
+    uptime: string | null,
+    executionTime: string | null
+}
 
 export type TaskInfo = {
     name: string,
     status: TaskStatus,
+    time: TaskTime,
     internalInfo: unknown
 }
+
+export type TaskManagerTask = TaskInfo & { id: number };
 
 //------------------------------------------------------------|
 //                 Worker Message Types                       |

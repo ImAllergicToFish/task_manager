@@ -1,6 +1,6 @@
 import { Worker, parentPort, isMainThread } from "worker_threads";
-import WorkerMessageInstance from "../taskManager/task/messages/workerMessage";
-import { MainThreadMessage, WorkerMessage } from "../ts/types";
+import WorkerMessageInstance from "../../taskManager/task/messages/workerMessage";
+import { MainThreadMessage, WorkerMessage } from "../../ts/types";
 
 /******************************************************************
 _______________________PUT YOUR CODE HERE__________________________
@@ -27,14 +27,10 @@ async function main(): Promise<void> {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     let counter = 0;
     while(true) {
-        // log('Hello world ' + counter);
-        // updateTaskInfo({counter});
-        // counter += 1;
-        // await sleep(1000);
-        for(let i =0; i < 1000000000; i++) {
-            
-        }
-        log('aboba')
+        log('Hello world ' + counter);
+        updateTaskInfo({counter});
+        counter += 1;
+        await sleep(500);
     }
 }
 
