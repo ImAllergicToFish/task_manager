@@ -23,8 +23,7 @@ taskManager.createTasks([
     //'logger'
 ]);
 
-const ENV_PORT = getConfig().PORT;
-const PORT = ENV_PORT ? ENV_PORT : 8070;
+const PORT = getConfig().PORT || 8070;
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
     startup()
