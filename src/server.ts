@@ -6,6 +6,7 @@ require('dotenv').config();
 import app from "./api";
 import taskManager from "./taskManager";
 import startup from "./startup";
+import getConfig from "./config";
 
 taskManager.createTasks(
     [
@@ -22,7 +23,8 @@ taskManager.createTasks([
     //'logger'
 ]);
 
-const PORT = 8070;
+const ENV_PORT = getConfig().PORT;
+const PORT = ENV_PORT ? ENV_PORT : 8070;
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
     startup()
