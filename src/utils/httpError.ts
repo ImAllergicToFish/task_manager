@@ -1,7 +1,7 @@
 /**
  * Custom error for ApiResponseHandler;
  */
- export class HttpError extends Error {
+export class HttpError extends Error {
     code: number;
     
     /**
@@ -10,9 +10,6 @@
      * @param message - information about error;
      */
     constructor(code?: number, message?: string) {
-        super(message);
-        this.message = message ? message : 'UNKNOWN ERROR';
-
         if(!code) code = 500;
         if(!message && code == 401) message = 'Unauthorized';
         if(!message && code == 403) message = 'Invalid input data';
@@ -20,6 +17,9 @@
         if(!message && code == 520) message = 'Unknown error';
         if(!message && code == 500) message = 'Server side error';
 
+        message = message ? message : 'UNKNOWN ERROR';
+
+        super(message);
         this.code = code;
     }
 }

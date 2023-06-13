@@ -5,8 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 export default async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        taskManager.startAll();
-        const payload = taskManager.getTaskList();
+        const payload = await taskManager.startAll();
        
         await ApiResponseHandler.success(req, res, payload);
     } catch(error) {

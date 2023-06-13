@@ -1,4 +1,7 @@
-export type TaskStatus = 'PENDING' | 'RUNNING' | 'ERROR' | 'DONE' | 'STOPING';
+import { TaskOptions } from "../taskManager/taskOptions";
+
+export type TaskStatus = 'PENDING' | 'PREPARING_TO_RUN' |'RUNNING' | 
+    'ERROR' | 'DONE' | 'STOPING';
 
 export type TaskTime = {
     uptime: string | null,
@@ -12,7 +15,7 @@ export type TaskInfo = {
     internalInfo: unknown
 }
 
-export type TaskManagerTask = TaskInfo & { id: number };
+export type TaskManagerTask = TaskInfo & { id: number } & TaskOptions;
 
 //------------------------------------------------------------|
 //                 Worker Message Types                       |

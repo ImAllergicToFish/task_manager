@@ -1,22 +1,29 @@
 /**
  * Starts the application on the port specified.
  */
+require('dotenv').config();
 
 import app from "./api";
 import taskManager from "./taskManager";
+import startup from "./startup";
 
 taskManager.createTasks(
-    'example',
-    'migration',
-    'logger',
-    'aboba'
+    [
+        'logger'
+    ],
+    {
+        secureAccess: true,
+        tag: "SOME TAG"
+    }
 );
 
-const PORT = 8090;
-app.listen(8090, () => {
+taskManager.createTasks([
+    'example',
+    //'logger'
+]);
+
+const PORT = 8070;
+app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
+    startup()
 })
-
-
-
-

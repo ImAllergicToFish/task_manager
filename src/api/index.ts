@@ -12,8 +12,8 @@ const app = express();
 app.use(cors({ origin: true }));
 
 // Configures the middleware
-app.use(authMiddleware);
 app.use(logMiddleware);
+app.use(authMiddleware);
 
 // Setup the Documentation
 setupSwaggerUI(app);

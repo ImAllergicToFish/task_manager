@@ -6,8 +6,7 @@ export default async (req: Request<{id: string}>, res: Response, next: NextFunct
     try {
         
         const id = Number(req.params.id); 
-        taskManager.startById(id);
-        const payload = taskManager.getTaskInfoById(id);
+        const payload = await taskManager.startById(id, req.query);
        
         await ApiResponseHandler.success(req, res, payload);
     } catch(error) {

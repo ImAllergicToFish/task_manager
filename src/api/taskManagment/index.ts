@@ -27,6 +27,24 @@ export default (app: express.Application) => {
         require('./taskRestartById').default
     );
 
+
+    /* BY IDS BLOCK
+    ------------------------- */
+
+    app.get(
+        `/service/taskStartMultiple`, 
+        require('./taskStartByIds').default
+    );
+    app.get(
+        `/service/taskStopMultiple`, 
+        require('./taskStopByIds').default
+    );
+    app.get(
+        `/service/taskRestartMultiple`, 
+        require('./taskRestartByIds').default
+    );
+
+
     /* ALL BLOCK
     ------------------------- */
     

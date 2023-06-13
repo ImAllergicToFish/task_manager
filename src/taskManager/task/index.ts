@@ -50,8 +50,11 @@ export default class Task {
         this._time = new TaskTimeUtils();
     }
 
-    start(): void {
-        this.initWorker();
+    async start(): Promise<void> {
+        // Check is task already started
+        if(this._status == 'RUNNING' || this._status == 'PREPARING_TO_RUN') return;
+        this._status = 'PREPARING_TO_RUN';
+        await this.initWorker();
     }
 
     async stop(): Promise<void> {
@@ -63,47 +66,54 @@ export default class Task {
 
     async restart(): Promise<void> {
         await this.stop();
-        this.start();
+        await this.start();
     }
 
-    private initWorker(): void {
+    private initWorker(): Promise<boolean> {
         const worker = new Worker(this._taskFolderPath);
 
-        worker.on('online', () => {
-            this._status = 'RUNNING';
-            this._time.start();
-        })
-
-        worker.on('message', (msg: WorkerMessage) => {
-            if(msg.type == "log") {
-                console.log(msg.data);
-            }
-            if(msg.type == 'taskInfo') {
-                this._internalInfo = msg.data;
-            }
-        });
-
-        worker.on('exit', (code) => {
-            console.log(this._name, 'CODE:', code);
-            switch(code) {
-                case 0:
-                    this._status = 'DONE';
-                    break;
-                case 1:
-                    if(this._status == 'STOPING') break;
-                    this._status = 'ERROR';
-                    break;
-            }
-            this._time.stop();
-        })
-
-        worker.on('error', (err) => {
-            console.log('ON ERROR\n' + err);
-            this._status = 'ERROR';
-            this._time.stop();
-        });
-       
         this._worker = worker;
+
+        return new Promise((resolve) => {
+            worker.on('online', () => {
+                this._status = 'RUNNING';
+                this._time.start();
+                resolve(true)
+            })
+    
+            worker.on('message', (msg: WorkerMessage) => {
+                if(msg.type == "log") {
+                    console.log(msg.data);
+                }
+                if(msg.type == 'taskInfo') {
+                    this._internalInfo = msg.data;
+                }
+            });
+    
+            worker.on('exit', (code) => {
+                console.log(this._name, 'CODE:', code);
+                switch(code) {
+                    case 0:
+                        this._status = 'DONE';
+                        break;
+                    case 1:
+                        if(this._status == 'STOPING') break;
+                        this._status = 'ERROR';
+                        break;
+                }
+                this._time.stop();
+                resolve(false)
+            })
+    
+            worker.on('error', (err) => {
+                console.log('ON ERROR\n' + err);
+                this._status = 'ERROR';
+                this._time.stop();
+                resolve(false)
+            });
+           
+        })
+
     }
     
 }

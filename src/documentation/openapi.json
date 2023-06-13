@@ -16,7 +16,7 @@
                 "tags": ["Service info"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "parameters": [
@@ -53,7 +53,7 @@
                 "tags": ["Service info"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "parameters": [
@@ -98,7 +98,7 @@
                 "tags": ["Service start"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "parameters": [
@@ -106,6 +106,13 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
                         "schema": {
                             "type": "string"
                         }
@@ -118,6 +125,54 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/TaskInfo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Smth"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                }
+            }
+        },
+        "/service/taskStartMultiple": {
+            "get": {
+                "tags": ["Service start"],
+                "security": [
+                    {
+                        "AuthKey": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ids[]",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "explode": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskInfoList"
                                 }
                             }
                         }
@@ -136,7 +191,7 @@
                 "tags": ["Service stop"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "parameters": [
@@ -144,6 +199,13 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
                         "schema": {
                             "type": "string"
                         }
@@ -156,6 +218,54 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/TaskInfo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Smth"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                }
+            }
+        },
+        "/service/taskStopMultiple": {
+            "get": {
+                "tags": ["Service stop"],
+                "security": [
+                    {
+                        "AuthKey": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ids[]",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "explode": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskInfoList"
                                 }
                             }
                         }
@@ -174,7 +284,7 @@
                 "tags": ["Service restart"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "parameters": [
@@ -182,6 +292,13 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
                         "schema": {
                             "type": "string"
                         }
@@ -207,12 +324,60 @@
                 }
             }
         },
+        "/service/taskRestartMultiple": {
+            "get": {
+                "tags": ["Service restart"],
+                "security": [
+                    {
+                        "AuthKey": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ids[]",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "explode": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "secureAccessKey",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskInfoList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Smth"
+                    },
+                    "429": {
+                        "description": "Too Many Requests."
+                    }
+                }
+            }
+        },
         "/service/taskStartAll": {
             "get": {
                 "tags": ["Service start"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "responses": {
@@ -240,7 +405,7 @@
                 "tags": ["Service stop"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "responses": {
@@ -268,7 +433,7 @@
                 "tags": ["Service restart"],
                 "security": [
                     {
-                        "bearerAuth": []
+                        "AuthKey": []
                     }
                 ],
                 "responses": {
@@ -295,7 +460,12 @@
     
     "components": {
         "securitySchemes": {
+            "AuthKey": {
+                "in": "header",
+                "type": "apiKey",
+                "name": "Authorization"
 
+            }
         },
         "schemas": {
             "TaskInfo": {

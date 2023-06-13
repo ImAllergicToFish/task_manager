@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 export default async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-        const payload =  await taskManager.stopAll();
+        const ids = (req.query.ids as string[]).map(id => Number(id));
+        const payload = await taskManager.restartByIds(ids, req.query);
        
         await ApiResponseHandler.success(req, res, payload);
     } catch(error) {
